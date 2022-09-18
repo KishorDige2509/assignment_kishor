@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.recipe.business.dto.ListingDTO;
 import com.recipe.business.dto.RecipeDTO;
 import com.recipe.business.dto.SuccessResponse;
 import com.recipe.business.enums.DishType;
@@ -37,7 +36,6 @@ class RecipeServiceImplTests {
 	Recipe model = new Recipe(1L, DishType.VEG, 2L, "some_inst", "some_ing", true);
 	RecipeDTO dto = new RecipeDTO(1L, DishType.VEG, 2L, "some_inst", "some_ing");
 	SuccessResponse success = new SuccessResponse("success");
-	
 
 	@Test
 	void saveRecipeTest() throws BussinessException, TechnicalException, ContractException {
@@ -74,20 +72,5 @@ class RecipeServiceImplTests {
 		assertEquals(null, service.getByRecipeId(1L).get(Constants.ERROR));
 
 	}
-
-//	@Test
-//	public void listingTest() throws BussinessException, TechnicalException, ContractException {
-//		when(repository.findByRecipeIdAndActiveTrue(1L))
-//				.thenReturn(new Recipe(1L, DishType.VEG, 2L, "some_inst", "some_ing", true));
-//		
-//		
-//		
-//		final Map<String, Object> map = service.listing(listingDto);
-//		
-//		assertEquals(dto, service.getByRecipeId(1L).get(Constants.DTO));
-//		assertEquals(null, service.getByRecipeId(1L).get(Constants.ERROR));
-//		assertEquals(success, service.getByRecipeId(1L).get(Constants.SUCCESS));
-//
-//	}
 
 }

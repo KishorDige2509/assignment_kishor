@@ -10,4 +10,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long>{
 
 	Recipe findByRecipeIdAndActiveTrue(Long recipeId);
 
+	void deleteByRecipeId(Long recipeId);
+
 }
