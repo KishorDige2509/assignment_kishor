@@ -12,12 +12,15 @@ import javax.persistence.Id;
 import com.recipe.business.enums.DishType;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Recipe implements Serializable {
 
@@ -39,6 +42,7 @@ public class Recipe implements Serializable {
 
 	private String ingredients;
 
+	@Default
 	private Boolean active = Boolean.TRUE;
 
 }
