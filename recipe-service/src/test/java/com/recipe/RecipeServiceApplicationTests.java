@@ -32,7 +32,7 @@ class RecipeServiceApplicationTests {
 	private RecipeRepository repository;
 
 	@Test
-	public void getByRecipeIdTest2() throws BussinessException, TechnicalException, ContractException {
+	public void getByRecipeIdTest() throws BussinessException, TechnicalException, ContractException {
 		when(repository.findByRecipeIdAndActiveTrue(1L))
 				.thenReturn(new Recipe(1L, DishType.VEG, 2L, "some_inst", "some_ing", true));
 		RecipeDTO dto = new RecipeDTO(1L, DishType.VEG, 2L, "some_inst", "some_ing");
