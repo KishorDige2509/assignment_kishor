@@ -22,11 +22,9 @@
   2. http://localhost:7004/recipe-service/get/Recipe/ByRecipeId?recipeId=5
   3. http://localhost:7004/recipe-service/changeStatus/ByRecipeId?recipeId=5&status=true
   4. http://localhost:7004/recipe-service/listing/Recipe
-   /*
-	 * @apiNote This API takes ListingDTO as argument where details of fields are as
-	 * follows:
-	 * 
-	 * start: zero indexed Integer value which denotes the page number 
+   * @apiNote This API takes ListingDTO as argument where details 
+     of fields are as follows:
+   * start: zero indexed Integer value which denotes the page number 
    * length: non-zero number denoting total number of items per page 
    * defaultSort: default sort column and direction (if not provided records will be sorted in
 	 * ascending order by primary key value) 
@@ -34,8 +32,7 @@
    * search: list of column name and respective values to be searched on along with searchType 
    * ascendingSortFields: ascending sorting of records based on column names 
    * descendingSortFields : descending sorting of records based on column names
-	 * 
-	 */
+	 
  
 
 * Postman Collection link: https://www.getpostman.com/collections/c8757d7132bac3cfd862 
