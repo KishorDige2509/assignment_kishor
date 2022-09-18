@@ -124,6 +124,7 @@ public class RecipeServiceImpl implements RecipeService {
 
 			model.setActive(status);
 
+			map.put(Constants.STATUS, model.getActive());
 			map.put(Constants.ERROR, null);
 			map.put(Constants.SUCCESS, new SuccessResponse(Constants.SUCCESS));
 
