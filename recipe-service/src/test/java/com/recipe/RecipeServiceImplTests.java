@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.recipe.business.dto.ListingDTO;
 import com.recipe.business.dto.RecipeDTO;
 import com.recipe.business.dto.SuccessResponse;
 import com.recipe.business.enums.DishType;
@@ -25,7 +26,7 @@ import com.recipe.util.Constants;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class RecipeServiceApplicationTests {
+class RecipeServiceImplTests {
 
 	@Autowired
 	private RecipeService service;
@@ -36,9 +37,10 @@ class RecipeServiceApplicationTests {
 	Recipe model = new Recipe(1L, DishType.VEG, 2L, "some_inst", "some_ing", true);
 	RecipeDTO dto = new RecipeDTO(1L, DishType.VEG, 2L, "some_inst", "some_ing");
 	SuccessResponse success = new SuccessResponse("success");
+	
 
 	@Test
-	public void saveRecipeTest() throws BussinessException, TechnicalException, ContractException {
+	void saveRecipeTest() throws BussinessException, TechnicalException, ContractException {
 
 		when(repository.save(model)).thenReturn(model);
 		final Map<String, Object> map = service.saveRecipe(dto);
@@ -50,7 +52,7 @@ class RecipeServiceApplicationTests {
 	}
 
 	@Test
-	public void getByRecipeIdTest() throws BussinessException, TechnicalException, ContractException {
+	void getByRecipeIdTest() throws BussinessException, TechnicalException, ContractException {
 		when(repository.findByRecipeIdAndActiveTrue(1L)).thenReturn(model);
 
 		final Map<String, Object> map = service.getByRecipeId(1L);
@@ -62,7 +64,7 @@ class RecipeServiceApplicationTests {
 	}
 
 	@Test
-	public void changeStatusTest() throws BussinessException, TechnicalException, ContractException {
+	void changeStatusTest() throws BussinessException, TechnicalException, ContractException {
 		when(repository.findByRecipeIdAndActiveTrue(1L)).thenReturn(model);
 
 		final Map<String, Object> map = service.changeStatus(1L, false);
@@ -74,11 +76,14 @@ class RecipeServiceApplicationTests {
 	}
 
 //	@Test
-//	public void getByRecipeIdTest() throws BussinessException, TechnicalException, ContractException {
+//	public void listingTest() throws BussinessException, TechnicalException, ContractException {
 //		when(repository.findByRecipeIdAndActiveTrue(1L))
 //				.thenReturn(new Recipe(1L, DishType.VEG, 2L, "some_inst", "some_ing", true));
-//		RecipeDTO dto = new RecipeDTO(1L, DishType.VEG, 2L, "some_inst", "some_ing");
-//		SuccessResponse success = new SuccessResponse("success");
+//		
+//		
+//		
+//		final Map<String, Object> map = service.listing(listingDto);
+//		
 //		assertEquals(dto, service.getByRecipeId(1L).get(Constants.DTO));
 //		assertEquals(null, service.getByRecipeId(1L).get(Constants.ERROR));
 //		assertEquals(success, service.getByRecipeId(1L).get(Constants.SUCCESS));
