@@ -12,12 +12,14 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.recipe.annotation.CustomTransactional;
 import com.recipe.business.dto.ListingDTO;
 import com.recipe.business.dto.RecipeDTO;
+import com.recipe.business.dto.SortDto;
 import com.recipe.business.dto.SuccessResponse;
 import com.recipe.business.service.RecipeService;
 import com.recipe.business.validator.RecipeValidator;
@@ -136,6 +138,21 @@ public class RecipeServiceImpl implements RecipeService {
 		return map;
 	}
 
+	/*
+	 * @apiNote This API takes ListingDTO as argument where details of fields are as
+	 * follows:
+	 * 
+	 * 
+	 * start: zero indexed Integer value which denotes the page number * length:
+	 * non-zero number denoting total number of items per page defaultSort: default
+	 * sort column and direction (if not provided records will be sorted in
+	 * ascending order by primary key value) status: boolean value denoting
+	 * active(true) or inactive(false) records search: list of column name and
+	 * respective values to be searched on along with searchType ascendingSortFields
+	 * : ascending sorting of records based on column names descendingSortFields :
+	 * descending sorting of records based on column names
+	 * 
+	 */
 	@Override
 	public Map<String, Object> listing(ListingDTO listingDto)
 			throws BussinessException, TechnicalException, ContractException {
@@ -146,8 +163,14 @@ public class RecipeServiceImpl implements RecipeService {
 
 			Integer length = listingDto.getLength();
 
+			log.info("Listing Dto: {}", listingDto);
 			if (length == null || length < 0) {
 				listingDto.setLength(Constants.FIFTY);
+			}
+
+			if (listingDto.getDefaultSort() == null) {
+				SortDto sortDto = new SortDto(Sort.Direction.ASC, List.of(Constants.RECIPE_ID));
+				listingDto.setDefaultSort(sortDto);
 			}
 
 			Page<Recipe> list = PaginateUtil.paginate(em, listingDto, Recipe.class);
