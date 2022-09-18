@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 
 import com.recipe.annotation.CustomTransactional;
 import com.recipe.business.dto.ListingDTO;
@@ -48,7 +47,7 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	@CustomTransactional
-	public Map<String, Object> saveRecipe(@Valid RecipeDTO dto, MultiValueMap<String, String> headers)
+	public Map<String, Object> saveRecipe(@Valid RecipeDTO dto)
 			throws BussinessException, TechnicalException, ContractException {
 		Map<String, Object> map = new HashMap<>();
 		log.info(LogUtil.startLog(CLASSNAME));
@@ -80,7 +79,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public Map<String, Object> getByRecipeId(Long recipeId, MultiValueMap<String, String> headers)
+	public Map<String, Object> getByRecipeId(Long recipeId)
 			throws BussinessException, TechnicalException, ContractException {
 		Map<String, Object> map = new HashMap<>();
 		log.info(LogUtil.startLog(CLASSNAME));
@@ -110,7 +109,7 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	@CustomTransactional
-	public Map<String, Object> changeStatus(Long recipeId, boolean status, MultiValueMap<String, String> headers)
+	public Map<String, Object> changeStatus(Long recipeId, boolean status)
 			throws BussinessException, TechnicalException, ContractException {
 		Map<String, Object> map = new HashMap<>();
 		log.info(LogUtil.startLog(CLASSNAME));
@@ -137,7 +136,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public Map<String, Object> listing(ListingDTO listingDto, MultiValueMap<String, String> headers)
+	public Map<String, Object> listing(ListingDTO listingDto)
 			throws BussinessException, TechnicalException, ContractException {
 		Map<String, Object> map = new HashMap<>();
 		log.info(LogUtil.startLog(CLASSNAME));
