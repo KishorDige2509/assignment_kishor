@@ -26,8 +26,8 @@
      of fields are as follows:
    * start: zero indexed Integer value which denotes the page number 
    * length: non-zero number denoting total number of items per page 
-   * defaultSort: default sort column and direction (if not provided records will be sorted in
-	 * ascending order by primary key value) 
+   * defaultSort: default sort column and direction (if not provided records
+     will be sorted in ascending order by primary key value) 
    * status: boolean value denoting active(true) or inactive(false) records 
    * search: list of column name and respective values to be searched on along with searchType 
    * ascendingSortFields: ascending sorting of records based on column names 
