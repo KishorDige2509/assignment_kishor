@@ -2,7 +2,6 @@ package com.recipe.business.validator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.CollectionUtils;
 
 import com.recipe.business.dto.RecipeDTO;
 import com.recipe.exception.ContractException;
@@ -37,19 +36,22 @@ public class RecipeValidator {
 				throw new ContractException(HttpStatus.EXPECTATION_FAILED, ErrorConstants.DISH_TYPE_ERROR, "dishType");
 			}
 
-			if (CollectionUtils.isEmpty(dto.getIngredients())) {
+			if (StringUtils.isBlank(dto.getIngredients())) {
 				log.error(ErrorConstants.INGREDIENT_ERROR);
-				throw new ContractException(HttpStatus.EXPECTATION_FAILED, ErrorConstants.INGREDIENT_ERROR, "ingredients");
+				throw new ContractException(HttpStatus.EXPECTATION_FAILED, ErrorConstants.INGREDIENT_ERROR,
+						"ingredients");
 			}
-			
-			if(StringUtils.isBlank(dto.getInstructions())) {
+
+			if (StringUtils.isBlank(dto.getInstructions())) {
 				log.error(ErrorConstants.INSTRUCTIONS_ERROR);
-				throw new ContractException(HttpStatus.EXPECTATION_FAILED, ErrorConstants.INSTRUCTIONS_ERROR, "instructions");
+				throw new ContractException(HttpStatus.EXPECTATION_FAILED, ErrorConstants.INSTRUCTIONS_ERROR,
+						"instructions");
 			}
-			
-			if(dto.getNoOfServings() == null || dto.getNoOfServings()<1) {
+
+			if (dto.getNoOfServings() == null || dto.getNoOfServings() < 1) {
 				log.error(ErrorConstants.NO_OF_SERVING_ERROR);
-				throw new ContractException(HttpStatus.EXPECTATION_FAILED, ErrorConstants.NO_OF_SERVING_ERROR, "noOfServings");
+				throw new ContractException(HttpStatus.EXPECTATION_FAILED, ErrorConstants.NO_OF_SERVING_ERROR,
+						"noOfServings");
 			}
 
 		} catch (Exception e) {

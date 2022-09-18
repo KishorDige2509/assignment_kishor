@@ -1,7 +1,6 @@
 package com.recipe.integration.domain;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,8 +8,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OrderBy;
 
 import com.recipe.business.enums.DishType;
 
@@ -40,9 +37,7 @@ public class Recipe implements Serializable {
 
 	private String instructions;
 
-	@ManyToMany
-	@OrderBy
-	private Set<IngredientMaster> ingredients;
+	private String ingredients;
 
 	private Boolean active = Boolean.TRUE;
 

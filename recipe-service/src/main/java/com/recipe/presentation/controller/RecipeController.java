@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("api/v1")
 public class RecipeController {
 
 	@Autowired
@@ -45,7 +45,7 @@ public class RecipeController {
 	public Map<String, Object> getByRecipeId(@RequestParam(Constants.RECIPE_ID) Long recipeId,
 			@RequestHeader MultiValueMap<String, String> headers)
 			throws BussinessException, TechnicalException, ContractException {
-		log.info(LogUtil.presentationLogger(EndPointReference.SAVE_RECIPE));
+		log.info(LogUtil.presentationLogger(EndPointReference.GET_RECIPE_BY_RECIPE_ID));
 		return recipeService.getByRecipeId(recipeId, headers);
 	}
 
@@ -53,7 +53,7 @@ public class RecipeController {
 	public Map<String, Object> changeStatus(@RequestParam(Constants.RECIPE_ID) Long recipeId,
 			@RequestParam(Constants.STATUS) boolean status, @RequestHeader MultiValueMap<String, String> headers)
 			throws BussinessException, TechnicalException, ContractException {
-		log.info(LogUtil.presentationLogger(EndPointReference.SAVE_RECIPE));
+		log.info(LogUtil.presentationLogger(EndPointReference.CHANGE_STATUS_BY_RECIPE_ID));
 		return recipeService.changeStatus(recipeId, status, headers);
 	}
 
@@ -61,7 +61,7 @@ public class RecipeController {
 	public Map<String, Object> listing(@RequestBody ListingDTO listingDto,
 			@RequestHeader MultiValueMap<String, String> headers)
 			throws BussinessException, TechnicalException, ContractException {
-		log.info(LogUtil.presentationLogger(EndPointReference.SAVE_RECIPE));
+		log.info(LogUtil.presentationLogger(EndPointReference.LISTING_RECIPE));
 		return recipeService.listing(listingDto, headers);
 	}
 

@@ -1,7 +1,5 @@
 package com.recipe.business.dto;
 
-import java.util.Set;
-
 import com.recipe.business.enums.DishType;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +21,6 @@ public class RecipeDTO {
 
 	private String instructions;
 
-	private Set<IngredientMasterDTO> ingredients;
+	private String ingredients;
 
 }

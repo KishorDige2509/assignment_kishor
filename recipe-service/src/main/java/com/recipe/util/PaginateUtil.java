@@ -7,8 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -20,12 +18,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.query.QueryUtils;
+import org.springframework.http.HttpStatus;
 
 import com.recipe.business.dto.ListingDTO;
 import com.recipe.business.dto.SearchDTO;
 import com.recipe.business.enums.DishType;
 import com.recipe.business.enums.SearchType;
-import com.recipe.integration.domain.IngredientMaster;
+import com.recipe.exception.BussinessException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +35,8 @@ public class PaginateUtil {
 		throw new IllegalStateException("Utility class");
 	}
 
-	public static <T> Page<T> paginate(EntityManager em, ListingDTO listingDto, Class<T> clazz) {
+	public static <T> Page<T> paginate(EntityManager em, ListingDTO listingDto, Class<T> clazz)
+			throws BussinessException {
 
 		log.info("Listing Dto {}", listingDto);
 
@@ -89,6 +89,7 @@ public class PaginateUtil {
 
 		criteria.where(builder.and(andSearchPredicateVar));
 		criteria.orderBy(QueryUtils.toOrders(pageable.getSort(), root, builder));
+		criteria.distinct(true);
 
 		TypedQuery<T> typedQuery = em.createQuery(criteria);
 
@@ -100,8 +101,8 @@ public class PaginateUtil {
 	}
 
 	private static <T> void performSearch(final String likesymbol, CriteriaBuilder builder, Root<T> root,
-			List<Predicate> predicates, SearchDTO searchDto) {
-		Join<T, IngredientMaster> joinTable;
+			List<Predicate> predicates, SearchDTO searchDto) throws BussinessException {
+
 		String decodedSearch = LanguageUtil.decodeValue(searchDto.getSearch());
 		String searchCol = searchDto.getSearchCol();
 		if (StringUtils.isNotEmpty(searchCol) && StringUtils.isNoneEmpty(decodedSearch)) {
@@ -113,29 +114,30 @@ public class PaginateUtil {
 
 			switch (searchCol) {
 			case FieldName.DISH_TYPE:
-				predicates.add(builder.equal(root.get(FieldName.DISH_TYPE), DishType.valueOf(decodedSearch)));
+				predicates.add(builder.equal(root.get(searchCol), DishType.valueOf(decodedSearch)));
 				break;
 			case FieldName.NO_OF_SERVINGS:
-				predicates.add(builder.equal(root.get(FieldName.NO_OF_SERVINGS), Long.parseLong(decodedSearch)));
+				predicates.add(builder.equal(root.get(searchCol), Long.parseLong(decodedSearch)));
 				break;
 			case FieldName.INSTRUCTIONS:
 				predicates.add(builder.like(builder.lower(root.get(searchDto.getSearchCol())),
 						likesymbol.concat(decodedSearch.toLowerCase()).concat(likesymbol)));
 				break;
-			case FieldName.INGREDIENT_NAME:
-				joinTable = root.join(FieldName.INGREDIENTS, JoinType.LEFT);
-				predicates.add(builder.equal(joinTable.get(FieldName.ACTIVE), Boolean.TRUE));
+			case FieldName.INGREDIENTS:
 
 				if (SearchType.NOT_CONTAINS.equals(searchType)) {
-					predicates.add(builder.notEqual(joinTable.get(FieldName.INGREDIENT_NAME), decodedSearch));
+					predicates.add(builder.notLike(builder.lower(root.get(searchCol)),
+							likesymbol.concat(decodedSearch.toLowerCase()).concat(likesymbol)));
 				} else {
-					predicates.add(builder.equal(joinTable.get(FieldName.INGREDIENT_NAME), decodedSearch));
+					predicates.add(builder.like(builder.lower(root.get(searchDto.getSearchCol())),
+							likesymbol.concat(decodedSearch.toLowerCase()).concat(likesymbol)));
 				}
 				break;
 
 			default:
-				log.info("No matching column found for provided Search column: {}", searchCol);
-				break;
+				log.error("No matching column found for provided Search column: {}", searchCol);
+				throw new BussinessException(HttpStatus.EXPECTATION_FAILED, "Invalid column name", "searchCol");
+
 			}
 
 		}

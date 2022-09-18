@@ -16,10 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
+import com.recipe.annotation.CustomTransactional;
 import com.recipe.business.dto.ListingDTO;
 import com.recipe.business.dto.RecipeDTO;
 import com.recipe.business.dto.SuccessResponse;
 import com.recipe.business.service.RecipeService;
+import com.recipe.business.validator.RecipeValidator;
 import com.recipe.exception.BussinessException;
 import com.recipe.exception.ContractException;
 import com.recipe.exception.TechnicalException;
@@ -45,12 +47,14 @@ public class RecipeServiceImpl implements RecipeService {
 	private EntityManager em;
 
 	@Override
+	@CustomTransactional
 	public Map<String, Object> saveRecipe(@Valid RecipeDTO dto, MultiValueMap<String, String> headers)
 			throws BussinessException, TechnicalException, ContractException {
 		Map<String, Object> map = new HashMap<>();
 		log.info(LogUtil.startLog(CLASSNAME));
 
 		try {
+			RecipeValidator.validateDto(dto);
 
 			Recipe model = recipeRepository.findByRecipeIdAndActiveTrue(dto.getRecipeId());
 
@@ -61,8 +65,9 @@ public class RecipeServiceImpl implements RecipeService {
 
 			BeanUtils.copyProperties(dto, model);
 
-			recipeRepository.save(model);
+			model = recipeRepository.save(model);
 
+			map.put(Constants.RECIPE_ID, model.getRecipeId());
 			map.put(Constants.ERROR, null);
 			map.put(Constants.SUCCESS, new SuccessResponse(Constants.SUCCESS));
 
@@ -104,6 +109,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+	@CustomTransactional
 	public Map<String, Object> changeStatus(Long recipeId, boolean status, MultiValueMap<String, String> headers)
 			throws BussinessException, TechnicalException, ContractException {
 		Map<String, Object> map = new HashMap<>();
