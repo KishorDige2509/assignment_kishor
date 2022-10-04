@@ -25,7 +25,7 @@
    * @apiNote This API takes ListingDTO as argument where details 
      of fields are as follows:
    * start: zero indexed Integer value which denotes the page number 
-   * length: non-zero number denoting total number of items per page 
+   * length: non-zero positive number denoting total number of items per page 
    * defaultSort: default sort column and direction (if not provided records
      will be sorted in ascending order by primary key value) 
    * status: boolean value denoting active(true) or inactive(false) records 
